@@ -27,6 +27,12 @@ var init = function(){
     dir = 1;
     spFrame = 0;
     lvFrame = 50;
+    tank = {
+        sprite: taSprite,
+        x:(arcadeBox.width - taSprite.x),
+        y: arcadeBox.height - (30 + taSprite.h)
+        
+    };
     aliens = [];
     var rows = [1,0,0,2,2];
     for(var i=0, len=rows.length; i<len;i++){
@@ -53,6 +59,13 @@ var run = function(){
     window.requestAnimationFrame(loop, arcadeBox.canvas);
 };
 var update = function(){
+    if(input.isDown(37)){//left
+        tank.x -= 4;
+    }
+    if(input.isDown(39)){//right
+        tank.x += 4;
+    }
+
     frames++;
     if(frames % lvFrame === 0){
         spFrame = (spFrame + 1) % 2;//also what on earth is this?
@@ -60,12 +73,12 @@ var update = function(){
         var _max = 1;
         var _min = arcadeBox.width;
         for(var i = 0; i<aliens.length; i++){
-            var a = aliens[i];//bug near here somewhere
+            var a = aliens[i];
             a.x += 30 * dir;
             _max = Math.max(_max, a.x, a.w);
             _min = Math.min(_min, a.x);
         }
-        if(_max > arcadeBox.width || _min < 30){
+        if(_max > arcadeBox.width -30 || _min < 30){
             dir = dir * -1;
             for(var i = 0; i< aliens.length; i++){
                 aliens[i].x += 30*dir;
@@ -81,6 +94,7 @@ var render = function(){
         var a = aliens[i];
         arcadeBox.drawSprite(a.sprite[spFrame], a.x,a.y);
     }
+    arcadeBox.drawSprite(tank.sprite, tank.x, tank.y);
 };
 
 main();//why is this here
