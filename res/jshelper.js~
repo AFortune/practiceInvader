@@ -42,8 +42,7 @@ var InputHandler = function(){
     var self = this;
     document.addEventListener("keydown", function(evt){
     
-        self.down = evt.keyCode;
-        self.down[evt.keyCode] = true;
+        self.down = [evt.keyCode] = true;
     });
     document.addEventListener("keyup", function(evt){
         delete self.down[evt.keyCode];
